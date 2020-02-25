@@ -26,7 +26,7 @@ public class MergeIntervalsCode {
         int end = firstInterval.end;
         while (intervalIterator.hasNext()) {
             Interval currentInterval = intervalIterator.next();
-            //interval starts before this interval ends
+            //interval starts before this first interval ends
             if (currentInterval.start <= end) {
                 end = Math.max(end, currentInterval.end);
             } else {
