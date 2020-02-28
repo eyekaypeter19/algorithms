@@ -3,44 +3,49 @@ package FastAndSlowPointers;
 class LinkedListCycleStart {
 
     public static ListNode findCycleStart(ListNode head) {
+        if (head == null || head.next == null)
+            return null;
         ListNode fast = head;
         ListNode slow = head;
-        int cycleLength = 0;
+        ListNode cycleStart = null;
         while(fast != null && fast.next != null) {
             fast = fast.next.next;
             slow = slow.next;
-            if(fast == slow){
-                //A cycle exists
-                cycleLength = calculateCycleLength(slow);
+            if(fast == slow) {
+                //we hav e found the cycle
+                int cycleLength = findCycleLength(slow);
+                cycleStart = findCycleStart(head, cycleLength);
                 break;
             }
         }
-        ListNode cycleStart = findCycleStart(head, cycleLength);
         return cycleStart;
     }
 
-    private static int calculateCycleLength(ListNode slow) {
-        ListNode current = slow;
+    private static int findCycleLength(ListNode slow) {
+        if (slow == null || slow.next == null) {
+            return 0;
+        }
         int cycleLength = 0;
-        do{
-            current = current.next;
+        ListNode currentNode = slow;
+        do {
+            currentNode = currentNode.next;
             cycleLength ++;
-        } while(current != slow);
+        } while (currentNode != slow);
         return cycleLength;
     }
 
-    private static ListNode findCycleStart(ListNode head, int cycleLength) {
-        ListNode fast = head;
-        ListNode slow = head;
-        while (cycleLength > 0){
-            slow = slow.next;
+    private static ListNode findCycleStart(ListNode currentNode, int cycleLength){
+        ListNode previousNode = currentNode;
+        while(cycleLength > 0) {
+            previousNode = previousNode.next;
             cycleLength --;
         }
-        while(fast != slow){
-            fast = fast.next;
-            slow = slow.next;
+        ListNode fastNode = currentNode;
+        while(fastNode != previousNode) {
+            fastNode = fastNode.next;
+            previousNode = previousNode.next;
         }
-        return fast;
+        return fastNode;
     }
 
     public static void main(String[] args) {
