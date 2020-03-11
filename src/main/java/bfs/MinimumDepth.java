@@ -1,9 +1,32 @@
 package bfs;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 class MinimumBinaryTreeDepth {
     public static int findDepth(TreeNode root) {
-        // TODO: Write your code here
-        return -1;
+        int minimumDepth = 1;
+        if(root == null || root.left == null || root.right == null)
+            return minimumDepth;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            for(int i = 0; i < size; i++) {
+                TreeNode currentNode = queue.poll();
+                if(currentNode.left == null && currentNode.right == null) {
+                    return minimumDepth;
+                }
+                if(currentNode.left != null) {
+                    queue.offer(currentNode.left);
+                }
+                if (currentNode.right != null) {
+                    queue.offer(currentNode.right);
+                }
+            }
+            minimumDepth += 1;
+        }
+        return minimumDepth;
     }
 
     public static void main(String[] args) {
